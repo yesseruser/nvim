@@ -10,8 +10,7 @@ local lsps = {
   "lua_ls",
   "eslint",
   "gradle_ls",
-  "phpactor",
-  "rust_analyzer",
+  "phpactor"
 }
 
 return {
