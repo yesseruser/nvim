@@ -33,7 +33,7 @@ return {
     config = function()
       local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
-      require("lspconfig").rust_analyzer.setup({
+      vim.lsp.config["rust_analyzer"] = {
         settings = {
           ["rust-analyzer"] = {
             diagnostics = {
@@ -41,12 +41,12 @@ return {
             },
           },
         },
-      })
+      }
 
       for _, lsp in ipairs(lsps) do
-        require("lspconfig")[lsp].setup({
+        vim.lsp.config[lsp] = {
           capabilities = capabilities,
-        })
+        }
       end
       local opts = {}
 
