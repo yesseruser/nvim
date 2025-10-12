@@ -2,15 +2,15 @@ local lsps = {
   "bashls",
   "clangd",
   "marksman",
-  "lua_ls",
   "csharp_ls",
+  "lua_ls",
   "cssls",
   "tailwindcss",
   "pyright",
-  "lua_ls",
   "eslint",
   "gradle_ls",
-  "phpactor"
+  "phpactor",
+  "luau_lsp"
 }
 
 return {
@@ -25,6 +25,9 @@ return {
     config = function()
       require("mason-lspconfig").setup({
         ensure_installed = lsps,
+        automatic_enable = {
+          exclude = { "luau_lsp" },
+        },
       })
     end,
   },
