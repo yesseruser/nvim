@@ -20,6 +20,7 @@ return {
         "dart",
         "go",
         "php",
+        "luau",
 			},
 			highlight = { enable = true },
 			indent = { enable = true },
