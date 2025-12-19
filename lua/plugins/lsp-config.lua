@@ -6,7 +6,7 @@ local lsps = {
   "lua_ls",
   "cssls",
   "tailwindcss",
-  "pyright",
+  "basedpyright",
   "eslint",
   "gradle_ls",
   "phpactor",
