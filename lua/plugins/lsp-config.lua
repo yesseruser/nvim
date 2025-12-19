@@ -47,9 +47,7 @@ return {
       }
 
       for _, lsp in ipairs(lsps) do
-        vim.lsp.config[lsp] = {
-          capabilities = capabilities,
-        }
+        vim.lsp.config[lsp].capabilities = capabilities
       end
       local opts = {}
 
