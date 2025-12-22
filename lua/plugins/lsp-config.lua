@@ -6,7 +6,7 @@ local lsps = {
   "lua_ls",
   "cssls",
   "tailwindcss",
-  "pyright",
+  "basedpyright",
   "eslint",
   "gradle_ls",
   "phpactor",
@@ -47,9 +47,7 @@ return {
       }
 
       for _, lsp in ipairs(lsps) do
-        vim.lsp.config[lsp] = {
-          capabilities = capabilities,
-        }
+        vim.lsp.config[lsp].capabilities = capabilities
       end
       vim.keymap.set("n", "gD", vim.lsp.buf.declaration, { desc = "Go to [D]eclaration" })
       vim.keymap.set("n", "gd", vim.lsp.buf.definition, { desc = "Go to [d]efinition" })
