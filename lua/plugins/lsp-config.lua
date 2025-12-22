@@ -49,6 +49,7 @@ return {
       for _, lsp in ipairs(lsps) do
         vim.lsp.config[lsp].capabilities = capabilities
       end
+
       vim.keymap.set("n", "gD", vim.lsp.buf.declaration, { desc = "Go to [D]eclaration" })
       vim.keymap.set("n", "gd", vim.lsp.buf.definition, { desc = "Go to [d]efinition" })
       vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, { desc = "[C]ode [A]ctions" })
@@ -57,6 +58,13 @@ return {
       vim.keymap.set("n", "<leader>re", vim.lsp.buf.rename, { desc = "Rename variable or functin" })
       vim.keymap.set("n", "<leader>e", vim.diagnostic.open_float, { desc = "Show diagnostic [E]rror messages" })
       vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, { desc = "Open diagnostic [Q]uickfix list" })
+
+      vim.api.nvim_create_autocmd('LspAttach', {
+        callback = function(args)
+          local client = assert(vim.lsp.get_client_by_id(args.data.client_id))
+          require("lsp-format").on_attach(client, args.buf)
+        end,
+      })
     end,
   },
 }
