@@ -6,12 +6,22 @@ vim.opt.tabstop = 2
 vim.opt.softtabstop = 2
 
 vim.api.nvim_create_autocmd("FileType", {
-  pattern = { "cs", "java" },
-  callback = function()
-    vim.opt.shiftwidth = 4
-    vim.opt.tabstop = 4
-    vim.opt.softtabstop = 4
-  end,
+	pattern = { "cs", "java", "python" },
+	callback = function()
+		vim.opt.shiftwidth = 4
+		vim.opt.tabstop = 4
+		vim.opt.softtabstop = 4
+	end,
+})
+
+vim.api.nvim_create_autocmd("FileType", {
+	pattern = { "lua", "luau" },
+	callback = function()
+		vim.opt.expandtab = false
+		vim.opt.shiftwidth = 4
+		vim.opt.tabstop = 4
+		vim.opt.softtabstop = 4
+	end,
 })
 
 vim.g.mapleader = " "
