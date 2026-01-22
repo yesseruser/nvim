@@ -13,6 +13,7 @@ local lsps = {
 	"phpactor",
 	"luau_lsp",
 	"stylua",
+	"ltex-ls",
 }
 
 return {
