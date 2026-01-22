@@ -49,6 +49,16 @@ return {
 				},
 			}
 
+			vim.lsp.config["texlab"] = {
+				settings = {
+					["texlab"] = {
+						["build"] = {
+							["onSave"] = true,
+						},
+					},
+				},
+			}
+
 			for _, lsp in ipairs(lsps) do
 				vim.lsp.config[lsp].capabilities = capabilities
 			end
