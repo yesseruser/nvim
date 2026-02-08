@@ -14,6 +14,7 @@ local lsps = {
 	"luau_lsp",
 	"stylua",
 	"texlab",
+	"hls",
 }
 
 return {
