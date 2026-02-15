@@ -1,1 +1,1 @@
-return {"lukas-reineke/lsp-format.nvim"}
+return { "lukas-reineke/lsp-format.nvim" }
