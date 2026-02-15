@@ -15,6 +15,7 @@ local lsps = {
 	"stylua",
 	"texlab",
 	"hls",
+	"rust_analyzer",
 }
 
 return {
