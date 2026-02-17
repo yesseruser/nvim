@@ -41,16 +41,6 @@ return {
 		config = function()
 			local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
-			vim.lsp.config["rust_analyzer"] = {
-				settings = {
-					["rust-analyzer"] = {
-						diagnostics = {
-							enable = false,
-						},
-					},
-				},
-			}
-
 			vim.lsp.config["texlab"] = {
 				settings = {
 					["texlab"] = {
@@ -79,6 +69,15 @@ return {
 				callback = function(args)
 					local client = assert(vim.lsp.get_client_by_id(args.data.client_id))
 					require("lsp-format").on_attach(client, args.buf)
+				end,
+			})
+
+			vim.api.nvim_create_autocmd("LspNotify", {
+				callback = function(args)
+					local client = assert(vim.lsp.get_client_by_id(args.data.client_id))
+					if client.name == "rust_analyzer" then
+						vim.cmd("LspCargoReload")
+					end
 				end,
 			})
 		end,
