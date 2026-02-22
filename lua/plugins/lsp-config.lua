@@ -75,7 +75,7 @@ return {
 			vim.api.nvim_create_autocmd("LspNotify", {
 				callback = function(args)
 					local client = assert(vim.lsp.get_client_by_id(args.data.client_id))
-					if client.name == "rust_analyzer" then
+					if client.name == "rust_analyzer" and vim.fn.exists(":LspCargoReload") > 0 then
 						vim.cmd("LspCargoReload")
 					end
 				end,
