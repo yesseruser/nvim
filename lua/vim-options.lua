@@ -11,6 +11,7 @@ vim.api.nvim_create_autocmd("FileType", {
 		vim.opt.shiftwidth = 4
 		vim.opt.tabstop = 4
 		vim.opt.softtabstop = 4
+		vim.opt_local.backupcopy = "yes"
 	end,
 })
 
