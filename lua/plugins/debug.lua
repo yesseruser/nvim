@@ -126,12 +126,6 @@ return {
 			dap.listeners.after.event_initialized["dapui_config"] = function()
 				dapui.open()
 			end
-			dap.listeners.before.event_terminated["dapui_config"] = function()
-				dapui.close()
-			end
-			dap.listeners.before.event_exited["dapui_config"] = function()
-				dapui.close()
-			end
 
 			-- ── Mason: auto-install adapters ─────────────────────────────────────
 			require("mason-nvim-dap").setup({
@@ -139,6 +133,82 @@ return {
 				ensure_installed = { "codelldb", "netcoredbg", "debugpy" },
 				handlers = {},
 			})
+
+			-- ── Rust (codelldb, auto-build) ──────────────────────────────────────
+			-- rustaceanvim's autoload_configurations is disabled below so this is
+			-- the sole Rust config that appears in the <leader>dc picker.
+			dap.configurations.rust = {
+				{
+					type = "codelldb",
+					request = "launch",
+					name = "Debug binary (cargo build)",
+					program = function()
+						-- Read package name from Cargo.toml
+						local cargo_toml = vim.fn.getcwd() .. "/Cargo.toml"
+						local package_name, bin_name, in_bin
+						for line in io.lines(cargo_toml) do
+							if line:match("^%[%[bin%]%]") then
+								in_bin = true
+							elseif line:match("^%[") then
+								in_bin = false
+							end
+							local n = line:match('^name%s*=%s*"(.+)"')
+							if n then
+								if in_bin then
+									bin_name = n
+								else
+									package_name = package_name or n
+								end
+							end
+						end
+						local name = bin_name or package_name
+						if not name then
+							vim.notify("DAP: could not find package name in Cargo.toml", vim.log.levels.ERROR)
+							return vim.fn.input("Binary path: ", vim.fn.getcwd() .. "/target/debug/", "file")
+						end
+
+						vim.notify("DAP: running cargo build…", vim.log.levels.INFO)
+						local out = vim.fn.system({ "cargo", "build" })
+						if vim.v.shell_error ~= 0 then
+							vim.notify("DAP: cargo build failed\n" .. out, vim.log.levels.ERROR)
+							return nil
+						end
+
+						return vim.fn.getcwd() .. "/target/debug/" .. name
+					end,
+					cwd = "${workspaceFolder}",
+					stopOnEntry = false,
+					args = function()
+						local co = coroutine.running()
+						local buf = vim.api.nvim_create_buf(false, true)
+						local width = 50
+						local win = vim.api.nvim_open_win(buf, true, {
+							relative = "editor",
+							width = width,
+							height = 1,
+							row = math.floor((vim.o.lines - 1) / 2),
+							col = math.floor((vim.o.columns - width) / 2),
+							style = "minimal",
+							border = "rounded",
+							title = " Debug Args ",
+							title_pos = "center",
+						})
+						vim.cmd("startinsert")
+						vim.keymap.set("i", "<CR>", function()
+							local line = vim.api.nvim_buf_get_lines(buf, 0, 1, false)[1] or ""
+							vim.api.nvim_win_close(win, true)
+							vim.cmd("stopinsert")
+							coroutine.resume(co, vim.split(line, " ", { trimempty = true }))
+						end, { buffer = buf })
+						vim.keymap.set("i", "<Esc>", function()
+							vim.api.nvim_win_close(win, true)
+							vim.cmd("stopinsert")
+							coroutine.resume(co, {})
+						end, { buffer = buf })
+						return coroutine.yield()
+					end,
+				},
+			}
 
 			-- ── Python ───────────────────────────────────────────────────────────
 			-- Detects active virtualenv automatically
@@ -244,9 +314,13 @@ return {
 		"mrcjkb/rustaceanvim",
 		version = "^5",
 		ft = { "rust" },
-		opts = {
-			tools = { hover_actions = { auto_focus = true } },
-			dap = { autoload_configurations = true },
-		},
+		init = function()
+			vim.g.rustaceanvim = {
+				tools = { hover_actions = { auto_focus = true } },
+				-- autoload_configurations = false so our manual config above is the
+				-- only entry in the picker, not the generic prompt-for-path one
+				dap = { autoload_configurations = false },
+			}
+		end,
 	},
 }
