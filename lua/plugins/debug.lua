@@ -249,24 +249,8 @@ return {
 			--   3. In Unity Editor: enable Development Build and use Play mode before attaching
 			--
 			-- If mono is not on the DAP subprocess PATH, replace "mono" below with "/usr/bin/mono"
-			local unity_debug_path = vim.fn.expand("~/.local/share/unity-debug/bin/UnityDebug.exe")
 
-			dap.adapters.unity = {
-				type = "executable",
-				command = "mono",
-				args = { unity_debug_path },
-			}
-
-			-- Append Unity config to whatever dap-cs already registered
-			vim.list_extend(dap.configurations.cs or {}, {
-				{
-					type = "unity",
-					request = "attach",
-					name = "Attach to Unity Editor",
-					-- Override per-project via .vscode/launch.json instead of hardcoding
-					path = vim.fn.getcwd() .. "/Library/EditorInstance.json",
-				},
-			})
+			require("nvim-dap-unity").setup({})
 
 			-- ── .vscode/launch.json auto-loading ─────────────────────────────────
 			-- Strips JS-style comments which are common in launch.json files
@@ -321,6 +305,12 @@ return {
 				-- only entry in the picker, not the generic prompt-for-path one
 				dap = { autoload_configurations = false },
 			}
+		end,
+	},
+	{
+		"ownself/nvim-dap-unity",
+		build = function()
+			require("nvim-dap-unity").install()
 		end,
 	},
 }

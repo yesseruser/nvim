@@ -41,7 +41,7 @@ return {
 		config = function()
 			local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
-			vim.lsp.config["texlab"] = {
+			vim.lsp.config("texlab", {
 				settings = {
 					["texlab"] = {
 						["build"] = {
@@ -49,10 +49,23 @@ return {
 						},
 					},
 				},
-			}
+			})
+
+			vim.lsp.config("csharp_ls", {
+				root_dir = function(bufnr, on_dir)
+					local fname = vim.api.nvim_buf_get_name(bufnr)
+					local util = require("lspconfig.util")
+					on_dir(
+						util.root_pattern("*.sln")(fname)
+							or util.root_pattern("*.csproj")(fname)
+							or util.root_pattern(".git")(fname)
+					)
+				end,
+				init_options = { AutomaticWorkspaceInit = true },
+			})
 
 			for _, lsp in ipairs(lsps) do
-				vim.lsp.config[lsp].capabilities = capabilities
+				vim.lsp.config(lsp, { capabilities = capabilities })
 			end
 
 			vim.keymap.set("n", "gD", vim.lsp.buf.declaration, { desc = "Go to [D]eclaration" })
@@ -68,6 +81,12 @@ return {
 			vim.api.nvim_create_autocmd("LspAttach", {
 				callback = function(args)
 					local client = assert(vim.lsp.get_client_by_id(args.data.client_id))
+					if client and client.name == "csharp_ls" then
+						-- Nudge csharp-ls into loading the workspace
+						vim.defer_fn(function()
+							vim.lsp.buf.hover()
+						end, 1000)
+					end
 					require("lsp-format").on_attach(client, args.buf)
 				end,
 			})
