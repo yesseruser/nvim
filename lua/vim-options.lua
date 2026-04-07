@@ -52,3 +52,8 @@ vim.opt.listchars = { tab = "» ", trail = "·", nbsp = "␣" }
 
 vim.opt.hlsearch = true
 vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>")
+
+vim.keymap.del("n", "grn")
+vim.keymap.del("n", "gra")
+vim.keymap.del("n", "grr")
+vim.keymap.del("n", "gri")
