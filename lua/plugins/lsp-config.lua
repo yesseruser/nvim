@@ -15,7 +15,7 @@ local lsps = {
 	"stylua",
 	"texlab",
 	"hls",
-	"rust_analyzer",
+	-- "rust_analyzer", - handled by rustaceanvim; see debug.lua
 }
 
 return {
