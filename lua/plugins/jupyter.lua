@@ -1,6 +1,6 @@
 return {
 	"dccsillag/magma-nvim",
 	config = function()
-		vim.cmd(":UpdateRemotePlugins")
+		-- vim.cmd(":UpdateRemotePlugins")
 	end,
 }
