@@ -15,7 +15,7 @@ local lsps = {
 	"stylua",
 	"texlab",
 	-- "nixd", not available in Mason
-	"nixfmt",
+	-- "nixfmt", has to be in path
 	-- "rust_analyzer", - handled by rustaceanvim; see debug.lua
 }
 
@@ -71,6 +71,19 @@ return {
 					)
 				end,
 				init_options = { AutomaticWorkspaceInit = true },
+			})
+
+			vim.lsp.config("nixd", {
+				nixpkgs = {
+					expr = "import <nixpkgs> {}",
+				},
+				formatting = {
+					command = { "nixfmt" },
+				},
+				-- options = {
+				-- nixos = {},
+				-- home_manager = {},
+				-- },
 			})
 
 			for _, lsp in ipairs(lsps) do
