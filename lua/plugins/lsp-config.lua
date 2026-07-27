@@ -74,16 +74,20 @@ return {
 			})
 
 			vim.lsp.config("nixd", {
-				nixpkgs = {
-					expr = "import <nixpkgs> {}",
+				settings = {
+					nixd = {
+						nixpkgs = {
+							expr = "import <nixpkgs> {}",
+						},
+						formatting = {
+							command = { "nixfmt" },
+						},
+						-- options = {
+						-- nixos = {},
+						-- home_manager = {},
+						-- },
+					},
 				},
-				formatting = {
-					command = { "nixfmt" },
-				},
-				-- options = {
-				-- nixos = {},
-				-- home_manager = {},
-				-- },
 			})
 			vim.lsp.enable("nixd")
 
