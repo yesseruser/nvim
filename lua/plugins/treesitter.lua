@@ -23,6 +23,7 @@ return {
 			"go",
 			"php",
 			"luau",
+			"nix",
 		}
 		require("nvim-treesitter").install(installed)
 		vim.api.nvim_create_autocmd("FileType", {
