@@ -14,7 +14,7 @@ local lsps = {
 	"luau_lsp",
 	"stylua",
 	"texlab",
-	"nil_ls",
+	-- "nixd", not available in Mason
 	"nixfmt",
 	-- "rust_analyzer", - handled by rustaceanvim; see debug.lua
 }
