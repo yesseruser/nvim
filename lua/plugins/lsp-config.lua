@@ -82,10 +82,14 @@ return {
 						formatting = {
 							command = { "nixfmt" },
 						},
-						-- options = {
-						-- nixos = {},
-						-- home_manager = {},
-						-- },
+					},
+					options = {
+						nixos = {
+							expr = "(builtins.getFlake (toString ./.)).nixosConfigurations.<hostname>.options",
+						},
+						home_manager = {
+							expr = '(builtins.getFlake (toString ./.)).homeConfigurations."<username>@<hostname>".options',
+						},
 					},
 				},
 			})
