@@ -85,6 +85,7 @@ return {
 				-- home_manager = {},
 				-- },
 			})
+			vim.lsp.enable("nixd")
 
 			for _, lsp in ipairs(lsps) do
 				vim.lsp.config(lsp, { capabilities = capabilities })
