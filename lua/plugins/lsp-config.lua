@@ -16,6 +16,7 @@ local lsps = {
 	"texlab",
 	-- "nixd", not available in Mason
 	-- "nixfmt", has to be in path
+	-- "vala-language-server", has to be in path
 	-- "rust_analyzer", - handled by rustaceanvim; see debug.lua
 }
 
@@ -94,6 +95,7 @@ return {
 				},
 			})
 			vim.lsp.enable("nixd")
+			vim.lsp.enable("vala-language-server")
 
 			for _, lsp in ipairs(lsps) do
 				vim.lsp.config(lsp, { capabilities = capabilities })
