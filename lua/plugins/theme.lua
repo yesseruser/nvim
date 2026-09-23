@@ -6,7 +6,7 @@ return {
 	opts = {},
 	config = function()
 		require("neopywal").setup({
-			use_palette = "everforest-hard",
+			use_palette = "everforest-medium",
 		})
 		vim.cmd.colorscheme("neopywal")
 	end,
