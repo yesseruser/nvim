@@ -27,9 +27,9 @@ return {
 		}
 		require("nvim-treesitter").install(installed)
 		vim.api.nvim_create_autocmd("FileType", {
-			pattern = installed,
-			callback = function()
-				vim.treesitter.start() -- highlighting
+			pattern = "*",
+			callback = function(ev)
+				pcall(vim.treesitter.start, ev.buf) -- highlighting
 				vim.wo.foldexpr = "v:lua.vim.treesitter.foldexpr()" -- folds
 				vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()" -- indentation
 			end,
